@@ -1,0 +1,44 @@
+$(function () {
+    var SCROLL_DELTA = 80;
+    var SCROLL_TIME = 100;
+    $('.tab-header.left-arrow').on('click', function (e) {
+        scrollHeader(-SCROLL_DELTA);
+        e.preventDefault();
+    });
+    $('.tab-header.right-arrow').on('click', function (e) {
+        scrollHeader(SCROLL_DELTA);
+        e.preventDefault();
+    });
+    function scrollHeader(delta) {
+        var headers = $('.tab-headers-inner');
+        var oldPosition = headers.scrollLeft();
+        headers.animate({ scrollLeft: oldPosition + delta }, SCROLL_TIME);
+    }
+    $('.tab-headers a').on('click', function switchTab(e) {
+        var selectedTab = $(this).attr('href');
+        $(this).parent('.tab-header').addClass('active').siblings().removeClass('active');
+        $(selectedTab + '_tab').addClass('active').siblings().removeClass('active');
+        e.preventDefault();
+    });
+});
+var data = {
+    cities: [
+        { name: 'Shanghai' },
+        { name: 'Karachi' },
+        { name: 'Lagos' },
+        { name: 'Delhi' },
+        { name: 'Tianjin' },
+        { name: 'Tokyo' },
+        { name: 'Mumbai' },
+        { name: 'Moscow' }
+    ]
+};
+var headerTemplate = Handlebars.compile(document.getElementById('headerTemplate').innerHTML);
+document.getElementsByClassName('tab-headers-inner')[0].innerHTML = headerTemplate(data);
+var contentTemplate = Handlebars.compile(document.getElementById('contentTemplate').innerHTML);
+document.getElementsByClassName('tab-content')[0].innerHTML = contentTemplate(data);
+var header = document.querySelector('.tab-headers-inner .tab-header');
+header.className = header.className + ' active';
+var tab = document.getElementsByClassName('tab')[0];
+tab.className = tab.className + ' active';
+//# sourceURL=pen.js
